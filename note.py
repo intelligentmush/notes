@@ -1,0 +1,46 @@
+#!/usr/bin/env python3
+import sys
+import datetime
+import os
+
+# Get the current date and time
+now = datetime.datetime.now()
+
+# Format the current date as a string to use in the filename
+date_string = now.strftime("%Y-%m-%d")
+
+# Format year and month for the directory structure
+year = now.strftime("%Y")
+month = now.strftime("%m")
+
+# Get the home directory
+home = os.path.expanduser("~")
+
+# Create the directory path
+dir_path = os.path.join(home, "notes", year, month)
+
+# Check if the directory exists, if not, create it
+if not os.path.exists(dir_path):
+    os.makedirs(dir_path)
+
+
+# Create the filename with a specific directory
+filename = os.path.join(dir_path, f"{date_string}.txt")
+
+# Create the timestamp for the entry
+timestamp = now.strftime("%H:%M:%S")
+
+# Get the note from the command line arguments
+note = ' '.join(sys.argv[1:])
+
+# Format the entry
+entry = f"{note} - {timestamp}\n"
+
+# Append the entry to the file
+if not os.path.exists(filename):
+    with open(filename, 'a') as f:
+        f.write(f"Note initiated on {date_string}\n")
+        f.write(entry)
+else:   
+    with open(filename, 'a') as f:
+        f.write(entry)
